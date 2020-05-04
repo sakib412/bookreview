@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block title %}{{ bookInfo[0]['title'] }} | BooksReview{% endblock %}
+{% set active_page = "book" %}
+
+
+
+
+{% block content %}
+<div class="container">
+    <div class="row my-3">
+        <div class="col-md-3 col-12 align-self-center">
+            <img class="img-thumbnail rounded card-img-top"
+                src="http://covers.openlibrary.org/b/isbn/{{ bookInfo[0]['isbn'] }}-M.jpg"
+                alt="{{ bookInfo[0]['title'] }}">
+        </div>
+        <div class="col-md-4 col-6 offset-1 ">
+            <h2 class="">Title: {{ bookInfo[0]['title'] }}</h2>
+            <h5>Author: {{ bookInfo[0]['author'] }}</h5>
+            <h5>Published: {{ bookInfo[0]['year'] }}</h5>
+            <h5>ISBN: {{ bookInfo[0]['isbn'] }}</h5>
+        </div>
+        <div class="col-md-4 col-6 align-self-center">
+            <h3 class="text-center">Goodreads Review</h3>
+            <hr>
+            <h5>Number of Ratings: {{bookInfo[1]['work_ratings_count']}}</h5>
+            <h5>Average Ratings: {{bookInfo[1]['average_rating']}}</h5>
+            <br>
+
+            <a class="text-center p-2 justify-self-center" href="/api/{{ bookInfo[0]['isbn'] }}">See JSON format
+                data</a>
+        </div>
+    </div>
+    <hr>
+    <h4 class="text-center p-3">Submit Your Review</h4>
+
+
+
+    {% block message %} {% endblock %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} text-center" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% endwith %}
+    <form method="POST" class="my-3 form-border">
+        <div class="form-row align-items-start">
+            <div class="form-group col-sm form-inline">
+                <label for="rating">Rate this book</label>
+                <select id="rating" name="rating" class="form-control" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4" selected>4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-6">
+                <div class="input-group">
+
+                    <textarea placeholder="Say someting" name="comment" id="comment" class="form-control" rows="6"
+                        required></textarea>
+                </div>
+            </div>
+            <div class="form-group col-sm align-self-end">
+                <button class="btn btn-success" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+
+    <h4 class="text-center p-3">User's Review</h4>
+    <ul class="list-unstyled">
+        {% if reviews %}
+        {% for review in reviews %}
+        <li class="p-3 list-group-item list-group-item-dark list-group-item-action">
+            {{ review.fullname}} Says "{{ review.comment }}" and
+            Rated {{ review.rating }} out of 5 on {{ review.time }}
+        </li>
+        {% endfor %}
+        {% else %}
+        <li class="p-3 list-group-item list-group-item-dark list-group-item-action">
+            No Reviews yet.
+        </li>
+        {% endif %}
+    </ul>
+</div>
+
+{% endblock %}

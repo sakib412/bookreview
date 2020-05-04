@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}BooksReview{% endblock %}
+{% set active_page = "home" %}
+
+
+
+
+{% block content %}
+<div class="container">
+
+    <h1 class="title text-center m-3">Search For Books</h1>
+    <form action="{{ url_for('search') }}" method="GET" class="row justify-content-center form-inline my-2 my-lg-0">
+        <input class="form-control-lg mr-sm-2" name="book" type="search" placeholder="Title, Author or ISBN" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>        
+    </form>
+    <p class="text-muted text-center m-2">e.g: Steve Jobs, Carl or 1416949658</p>
+
+    {% if message  %}
+    <div class=" text-danger m-3">{{ message }}</div>
+    {% endif %}
+
+  <hr>
+
+    <h1 class="title text-center m-3">Recent Books</h1>
+    <div class="row justify-content-center my-3">
+        {% for book in books %}
+
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 m-2 card" style="width: 18rem;">
+            <img class="card-img-top" src="http://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+                alt="{{ book.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }} ({{ book.year }})</h5>
+                <p class="card-text">by {{book.author }}</p>
+                <a href="book/{{ book.isbn }}" class="btn btn-primary">More Details</a>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

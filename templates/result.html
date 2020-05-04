@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Search Results | BooksReview{% endblock %}
+{% set active_page = "result" %}
+
+
+
+
+{% block content %}
+
+
+<h1 class="title text-center m-3">Search Results</h1>
+<div class="container">
+
+    <div class="p-3 mb-2">Back to <a href="{{ url_for('index') }}">Homepage</a></div>
+    {% if message  %}
+    <div class=" text-danger text-capitalize m-3">{{ message }}</div>
+    {% endif %}
+    <div class="row justify-content-center my-3">
+        {% for book in books %}
+
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 m-2 card" style="width: 18rem;">
+            <img class="card-img-top" src="http://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="{{ book.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }} ({{ book.year }})</h5>
+                <p class="card-text">by {{book.author }} <br> ISBN: {{ book.isbn }}</p>
+                <a href="/book/{{book['isbn']}}" class="btn btn-primary">More Details</a>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
